@@ -4,10 +4,11 @@ import org.emoseman.cmsc451.project1.exp.UnsortedException;
 
 /**
  * Evan Moseman
- * TODO
- * <p>
- * <p>
- * This utility class handles the validation of the benchmark results.
+ * CMSC-451
+ * Project 1
+ * November 11, 2025
+ *
+ * Provides validation helpers to ensure generated benchmark results remain sorted as expected.
  */
 public final class Validator {
 
@@ -15,7 +16,11 @@ public final class Validator {
     }
 
     /**
-     * Verify that the elements in data are sorted.
+     * Verify that the supplied array is sorted in non-decreasing order.
+     *
+     * @param data array to inspect
+     *
+     * @throws UnsortedException if the array is found to be unsorted
      */
     public static void verifyDataOrder(int[] data)
         throws UnsortedException {

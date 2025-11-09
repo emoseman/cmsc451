@@ -14,17 +14,18 @@ import java.util.stream.Collectors;
  * CMSC-451
  * Project 1
  * November 11, 2025
- * <p>
- * This class handles writing the benchmark results statistics to a file.
+ *
+ * Serializes benchmark run statistics for each sorter into CSV files for later analysis.
  */
 public class ResultsWriter {
 
     private static final String BASE_FILE_NAME = "benchmark-results-%s.csv";
 
     /**
-     * Print out a summary of the benchmark results.
+     * Persist statistics for each sorter to a CSV file whose name includes the
+     * sorter type.
      *
-     * @param benchmarkStats
+     * @param benchmarkStats map of sorter -> element count -> recorded runs
      */
     public void storeBenchmarkStatistics(Map<AbstractSort, Map<Integer, List<RunCounter>>> benchmarkStats) {
         // Foreach sorter

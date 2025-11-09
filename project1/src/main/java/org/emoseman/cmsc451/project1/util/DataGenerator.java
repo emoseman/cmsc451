@@ -5,21 +5,26 @@ import java.time.Instant;
 
 /**
  * Evan Moseman
- * <p>
- * TODO
- * <p>
- * This utility class handles data generation for the benchmarks.
+ * CMSC-451
+ * Project 1
+ * November 11, 2025
+ *
+ * Generates pseudo-random integer arrays used as input data sets for the benchmarks.
  */
-public final class TestData {
+public final class DataGenerator {
     private static final SecureRandom RANDOM = new SecureRandom();
 
-    private TestData() {
+    private DataGenerator() {
     }
 
     /**
      * Generate random integers.
+     *
+     * @param count number of integers to create
+     *
+     * @return array populated with pseudo-random values
      */
-    public static int[] generateRandomData(int count) {
+    public static int[] generateData(int count) {
         RANDOM.setSeed(Instant.now().getNano());
 
         int[] result = new int[count];

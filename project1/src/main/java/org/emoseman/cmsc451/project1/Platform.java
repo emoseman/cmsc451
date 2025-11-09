@@ -10,16 +10,11 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Evan Moseman
- * <p>
  * CMSC-451
- * <p>
- * Professor Jiang
+ * Project 1
  * November 11, 2025
  *
- * <p>
- * Entry point into the program that will perform benchmarking.
- * <p>
- * This class will establish CPU affinity if it is available.
+ * Program entry point that pins the benchmark thread to one core when possible before launching the benchmark run.
  */
 @SuppressWarnings("ResultOfMethodCallIgnored")
 public class Platform {
@@ -29,9 +24,9 @@ public class Platform {
         Executors.newSingleThreadExecutor();
 
     /**
-     * Use processor affinity if it is available.
+     * Optionally enable processor affinity, then execute the benchmark runner.
      *
-     * @param args
+     * @param args command-line arguments (unused)
      */
     public static void main(String[] args) {
         boolean affinityAvailable = Affinity.isJNAAvailable();

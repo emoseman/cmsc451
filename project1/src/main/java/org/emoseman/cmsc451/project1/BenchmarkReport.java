@@ -30,7 +30,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * TODO
+ * Evan Moseman
+ * CMSC-451
+ * Project 1
+ * November 11, 2025
+ * <p>
+ * Displays benchmark CSV data in a sortable Swing table and recomputes the
+ * summary statistics for each row.
  */
 public class BenchmarkReport
     extends JFrame {
@@ -42,7 +48,10 @@ public class BenchmarkReport
     private final DefaultTableModel model;
     private final JTable table;
 
-    public BenchmarkReport() {
+    /**
+     * Builds the benchmark report window, table, and menu bar.
+     */
+    public BenchmarkReport(String[] args) {
         super("Benchmark Report");
 
         // Setup look and feel
@@ -64,10 +73,22 @@ public class BenchmarkReport
         setPreferredSize(new Dimension(700, 400));
         pack();
         setLocationRelativeTo(null);
+
+        if (args.length >= 1) {
+            System.out.println("cliFilename = " + args[0]);
+            try {
+                applyToTable(loadCsvFile(new File(args[0])));
+            }
+            catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     /**
-     * Create the menu bar.
+     * Builds the "File" menu containing open, clear, and quit actions.
+     *
+     * @return fully configured menu bar instance
      */
     private JMenuBar buildMenuBar() {
         JMenuBar mb = new JMenuBar();
@@ -105,7 +126,7 @@ public class BenchmarkReport
     }
 
     /**
-     * Remove all table contents.
+     * Remove all table contents so new data can be loaded cleanly.
      */
     private void clearTable() {
         model.setRowCount(0);
@@ -113,7 +134,7 @@ public class BenchmarkReport
     }
 
     /**
-     * Handle file opening.
+     * Show a file chooser, load the selected CSV, and display the parsed data.
      */
     private void doOpenFile() {
         JFileChooser chooser = new JFileChooser();
@@ -125,24 +146,44 @@ public class BenchmarkReport
             return;
         }
 
-        File file = chooser.getSelectedFile();
+        loadFile(chooser.getSelectedFile());
+    }
+
+    /**
+     * Load a CSV file, populate the table, and surface any errors to the user.
+     *
+     * @param file file to load; ignored if {@code null}
+     */
+    private void loadFile(File file) {
+        if (file == null) {
+            return;
+        }
+        if (!file.isFile()) {
+            JOptionPane.showMessageDialog(this,
+                                          "File not found:\n" +
+                                          file.getAbsolutePath(),
+                                          "Error",
+                                          JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         try {
             List<List<String>> data = loadCsvFile(file);
             applyToTable(data);
         }
         catch (Exception e) {
             JOptionPane.showMessageDialog(this,
-                                          "Failed to load file:" +
+                                          "Failed to load file:\n" +
                                           e.getMessage(),
-                                          "\nError",
+                                          "Error",
                                           JOptionPane.ERROR_MESSAGE);
         }
     }
 
     /**
-     * Apply the data sets to the table.
+     * Apply parsed CSV rows to the table model.
      *
-     * @param rows
+     * @param rows table rows representing summary statistics for each data size
      */
     private void applyToTable(List<List<String>> rows) {
         clearTable();
@@ -154,7 +195,7 @@ public class BenchmarkReport
     }
 
     /**
-     * Set the column alignment.
+     * Set the alignment for each table column (size left, metrics right).
      */
     private void alignColumns() {
         DefaultTableCellRenderer left = new DefaultTableCellRenderer();
@@ -162,7 +203,8 @@ public class BenchmarkReport
         DefaultTableCellRenderer right = new DefaultTableCellRenderer();
         right.setHorizontalAlignment(SwingConstants.RIGHT);
 
-        for (int i = 0; i < COLUMN_NAMES.length; i++) {
+        int columnCount = table.getColumnModel().getColumnCount();
+        for (int i = 0; i < columnCount; i++) {
             if (i == 0) {
                 table.getColumnModel().getColumn(i).setCellRenderer(left);
             }
@@ -173,7 +215,13 @@ public class BenchmarkReport
     }
 
     /**
-     * Parse the csv file into data rows.
+     * Parse the CSV file into rows of summary values.
+     *
+     * @param file CSV file to process
+     *
+     * @return parsed rows ready for display
+     *
+     * @throws Exception if the file cannot be read or parsed
      */
     private List<List<String>> loadCsvFile(File file)
         throws Exception {
@@ -197,9 +245,11 @@ public class BenchmarkReport
     }
 
     /**
-     * Parse individual comma-separated line of text.
+     * Parse individual comma-separated line of text into summary values.
      *
-     * @param line the line of csv text.
+     * @param line CSV line describing size and recorded counts/times
+     *
+     * @return processed row with averages and coefficients
      */
     private List<String> processDataRow(String line) {
         List<String> cells = new ArrayList<>();
@@ -238,7 +288,14 @@ public class BenchmarkReport
         return cells;
     }
 
+    static String cliFilename;
+
+    /**
+     * Launch the Swing application on the Event Dispatch Thread.
+     *
+     * @param args CLI arguments (unused)
+     */
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new BenchmarkReport().setVisible(true));
+        SwingUtilities.invokeLater(() -> new BenchmarkReport(args).setVisible(true));
     }
 }

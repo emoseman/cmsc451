@@ -6,7 +6,7 @@ import org.emoseman.cmsc451.project1.alg.ShellSort;
 import org.emoseman.cmsc451.project1.exp.UnsortedException;
 import org.emoseman.cmsc451.project1.model.RunCounter;
 import org.emoseman.cmsc451.project1.util.ResultsWriter;
-import org.emoseman.cmsc451.project1.util.TestData;
+import org.emoseman.cmsc451.project1.util.DataGenerator;
 import org.emoseman.cmsc451.project1.util.Validator;
 
 import java.time.Duration;
@@ -20,9 +20,12 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
+ * Evan Moseman
+ * CMSC-451
+ * Project 1
+ * November 11, 2025
  *
- *
- * TODO
+ * Coordinates the warmup, benchmarking runs, and persistence of statistics for the configured sorting algorithms.
  */
 public class Benchmark
     implements Runnable {
@@ -44,12 +47,10 @@ public class Benchmark
         {new MergeSort(), new ShellSort()};
 
     /**
-     * This thread performs the benchmark.
+     * Entry point for the benchmark thread: performs warmup, runs each data
+     * size, and persists the aggregated results.
      *
-     * @throws UnsortedException If the end results of the algorithm don't
-     *                           yield
-     *                           sorted results, then the benchmark is invalid
-     *                           and the program exits.
+     * @throws UnsortedException if any sorter fails to produce sorted output
      */
     @Override
     public void run()
@@ -73,18 +74,18 @@ public class Benchmark
     }
 
     /**
-     * Perform sorting runs until the difference between each run is below 2% or
-     * until the number of attempts reaches its limit.
+     * Perform sorting runs until the difference between consecutive runs is
+     * below the configured threshold or the iteration limit is reached.
      *
-     * @param sorters The sorting algorithm implementations.
+     * @param sorters sorting algorithm implementations to warm up
      *
-     * @throws UnsortedException
+     * @throws UnsortedException if a sorter fails validation during warmup
      */
     private void performWarmup(AbstractSort[] sorters)
         throws UnsortedException {
 
         int warmupSize = ELEMENT_COUNT_INC * 20;
-        int[] warmupData = TestData.generateRandomData(warmupSize);
+        int[] warmupData = DataGenerator.generateData(warmupSize);
         Map<AbstractSort, Duration>
             previousDurations =
             Arrays.stream(sorters)
@@ -154,13 +155,13 @@ public class Benchmark
     }
 
     /**
-     * Run the sorter algorithm on a copy of the test data, and
-     * validate the results.
+     * Run the sorter algorithm on a copy of the provided test data and validate
+     * the sorted result.
      *
-     * @param sorter
-     * @param sourceData
+     * @param sorter     algorithm to execute
+     * @param sourceData dataset to copy before sorting
      *
-     * @throws UnsortedException
+     * @throws UnsortedException if the sorter does not yield ordered data
      */
     private void runSorter(AbstractSort sorter, int[] sourceData)
         throws UnsortedException {
@@ -171,9 +172,10 @@ public class Benchmark
     }
 
     /**
-     * Run the sorter algorithm and store the statistics.
+     * Initialize the nested map structure that holds run statistics for each
+     * sorter keyed by element count.
      *
-     * @throws UnsortedException
+     * @return empty results map ready for population
      */
     private Map<AbstractSort, Map<Integer, List<RunCounter>>> initializeResultMap() {
         Map<AbstractSort, Map<Integer, List<RunCounter>>> benchmarkResults = new HashMap<>();
@@ -184,11 +186,15 @@ public class Benchmark
     }
 
     /**
+     * Execute the configured number of runs for a given dataset size and update
+     * the accumulated statistics map.
      *
-     * @param dataSetSize
-     * @param benchmarkResults
-     * @return
-     * @throws UnsortedException
+     * @param dataSetSize       number of elements in the generated dataset
+     * @param benchmarkResults  map of sorter -> element count -> run stats to update
+     *
+     * @return the updated benchmark map
+     *
+     * @throws UnsortedException if any sorter produces unsorted output
      */
     private Map<AbstractSort, Map<Integer, List<RunCounter>>> executeRunsForSize(
         int dataSetSize,
@@ -196,7 +202,7 @@ public class Benchmark
         throws UnsortedException {
 
         for (int j = 0; j < RUN_COUNT; j++) {
-            int[] testDataSource = TestData.generateRandomData(dataSetSize);
+            int[] testDataSource = DataGenerator.generateData(dataSetSize);
             for (AbstractSort sorter : sorters) {
                 runAndRecord(sorter,
                              testDataSource,
@@ -208,12 +214,15 @@ public class Benchmark
     }
 
     /**
+     * Run a sorter using the supplied data and append the resulting statistics
+     * to the per-size collection.
      *
-     * @param sorter
-     * @param sourceData
-     * @param stats
-     * @param dataSetSize
-     * @throws UnsortedException
+     * @param sorter      algorithm being benchmarked
+     * @param sourceData  dataset that will be copied before sorting
+     * @param stats       map of dataset size to recorded runs for this sorter
+     * @param dataSetSize number of elements in the current dataset
+     *
+     * @throws UnsortedException if the sorter fails validation
      */
     private void runAndRecord(AbstractSort sorter,
                               int[] sourceData,

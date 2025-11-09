@@ -5,15 +5,20 @@ import java.util.Arrays;
 /**
  * Evan Moseman
  * CMSC-451
- * Professor Jiang
+ * Project 1
  * November 11, 2025
- * <p>
- * An implementation of the merge sort algorithm that will record duration and
- * operation count during the sorting process.
+ *
+ * Merge sort implementation that tracks elapsed time and critical operations for benchmarking.
  */
 public class MergeSort
     extends AbstractSort {
 
+    /**
+     * Sort the provided array using merge sort while recording timing and
+     * operation statistics.
+     *
+     * @param array array to sort in-place
+     */
     @Override
     public void sort(int[] array) {
         startSort();
@@ -29,8 +34,9 @@ public class MergeSort
      * <p>
      * Algorithm source: https://www.geeksforgeeks.org/dsa/merge-sort/
      *
-     * @param a Array of ints
-     * @param n
+     * @param a          array being sorted
+     * @param leftIndex  lower bound of the active partition
+     * @param rightIndex upper bound of the active partition
      */
     private void mergeSort(int[] a, int leftIndex, int rightIndex) {
         if (leftIndex < rightIndex) {
@@ -48,10 +54,10 @@ public class MergeSort
     /**
      * Merge two subarrays.
      *
-     * @param array
-     * @param leftIndex
-     * @param middleIndex
-     * @param rightIndex
+     * @param array       array being sorted
+     * @param leftIndex   start index of the left partition
+     * @param middleIndex ending index of the left partition
+     * @param rightIndex  end index of the right partition
      */
     private void merge(int[] array,
                        int leftIndex,

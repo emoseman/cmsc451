@@ -3,15 +3,20 @@ package org.emoseman.cmsc451.project1.alg;
 /**
  * Evan Moseman
  * CMSC-451
- * Professor Jiang
+ * Project 1
  * November 11, 2025
- * <p>
- * Implementation of the Shell sort algorithm that will record operations and
- * total process duration.
+ *
+ * Shell sort implementation instrumented to capture operation counts and total runtime.
  */
 public class ShellSort
     extends AbstractSort {
 
+    /**
+     * Execute Shell sort on the provided array while recording timing and
+     * operation metrics.
+     *
+     * @param array array to sort in-place
+     */
     @Override
     public void sort(int[] array) {
         startSort();
@@ -20,7 +25,11 @@ public class ShellSort
     }
 
     /**
-     * Sorting algorithm source: https://www.geeksforgeeks.org/dsa/shell-sort/
+     * Core Shell sort implementation.
+     *
+     * <p>Algorithm source: https://www.geeksforgeeks.org/dsa/shell-sort/</p>
+     *
+     * @param array array to sort in-place
      */
     private void shellSort(int[] array) {
         int arrayLength = array.length;

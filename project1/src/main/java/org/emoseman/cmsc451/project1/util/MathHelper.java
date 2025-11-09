@@ -4,15 +4,22 @@ import java.util.List;
 
 /**
  * Evan Moseman
- * <p>
- * // TODO
+ * CMSC-451
+ * Project 1
+ * November 11, 2025
+ *
+ * Provides helper methods to compute averages and coefficients of variation for benchmark metrics.
  */
 public final class MathHelper {
     private MathHelper() {
     }
 
     /**
-     * TODO
+     * Compute the arithmetic mean for the supplied values.
+     *
+     * @param values list of values to average
+     *
+     * @return average of the provided values
      */
     public static double calculateAverage(List<Long> values) {
         long total = 0;
@@ -25,7 +32,7 @@ public final class MathHelper {
     /**
      * Calculate the coefficient of variation for a list of values.
      *
-     * @param values The values.
+     * @param values list of measurements to evaluate
      *
      * @return coefficient of variation
      */

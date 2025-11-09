@@ -6,11 +6,10 @@ import java.time.Instant;
 /**
  * Evan Moseman
  * CMSC-451
- * Professor Jiang
+ * Project 1
  * November 11, 2025
- * <p>
- * This abstract sort class defines the base functionality needed to measure the
- * elapsed time and operation count for sorting algorithm subclasses.
+ *
+ * Provides shared timing and operation-count instrumentation for concrete sorting implementations.
  */
 public abstract class AbstractSort {
 
@@ -25,6 +24,8 @@ public abstract class AbstractSort {
 
     /**
      * Returns the final operation count.
+     *
+     * @return number of critical operations performed
      */
     public int getCount() {
         return operationCount;
@@ -32,13 +33,17 @@ public abstract class AbstractSort {
 
     /**
      * Returns the elapsed time of the sort process.
+     *
+     * @return elapsed time, in nanoseconds
      */
     public long getTime() {
         return elapsedTime.toNanos();
     }
 
     /**
-     * Sort the array of integers.
+     * Sort the supplied array of integers.
+     *
+     * @param array array to be sorted in-place
      */
     public abstract void sort(int[] array);
 
