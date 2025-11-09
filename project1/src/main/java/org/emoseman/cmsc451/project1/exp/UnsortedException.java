@@ -1,4 +1,4 @@
-package org.emoseman.cmsc451.project1;
+package org.emoseman.cmsc451.project1.exp;
 
 /**
  * Evan Moseman

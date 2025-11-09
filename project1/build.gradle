@@ -20,8 +20,17 @@ application {
     mainClass = 'org.emoseman.cmsc451.project1.Platform'
 }
 
+tasks.register('runHotspotOptimized', JavaExec) {
+    group = 'application'
+    description = 'Runs Platform with aggressive JIT options.'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = application.mainClass
+    jvmArgs '-XX:CompileThreshold=1000', '-XX:+TieredCompilation'
+}
+
 dependencies {
     implementation("net.openhft:affinity:3.27ea1")
+    implementation 'com.google.code.gson:gson:2.13.2'
 
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
