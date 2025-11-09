@@ -24,6 +24,20 @@ public abstract class AbstractSort {
     private Instant sortStartInstance;
 
     /**
+     * Returns the final operation count.
+     */
+    public int getCount() {
+        return operationCount;
+    }
+
+    /**
+     * Returns the elapsed time of the sort process.
+     */
+    public long getTime() {
+        return elapsedTime.toNanos();
+    }
+
+    /**
      * Sort the array of integers.
      */
     public abstract void sort(int[] array);
@@ -49,19 +63,5 @@ public abstract class AbstractSort {
      */
     protected void incrementCount() {
         operationCount++;
-    }
-
-    /**
-     * Returns the final operation count.
-     */
-    public int getCount() {
-        return operationCount;
-    }
-
-    /**
-     * Returns the elapsed time of the sort process.
-     */
-    public long getTime() {
-        return elapsedTime.toNanos();
     }
 }

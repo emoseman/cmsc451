@@ -4,24 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9d3ae78b-5ab4-4e61-ace1-8558ca0cb824" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/emoseman/cmsc451/project1/model/RunCounter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/emoseman/cmsc451/project1/model/Statistics.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/emoseman/cmsc451/project1/util/ResultsWriter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/emoseman/cmsc451/project1/util/SummarizeStatistics.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/emoseman/cmsc451/project1/util/TestData.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/emoseman/cmsc451/project1/util/Validator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+    <list default="true" id="9d3ae78b-5ab4-4e61-ace1-8558ca0cb824" name="Changes" comment="Project working.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/libs.versions.toml" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/libs.versions.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/emoseman/cmsc451/project1/AbstractSort.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/emoseman/cmsc451/project1/alg/AbstractSort.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/emoseman/cmsc451/project1/Benchmark.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/emoseman/cmsc451/project1/Benchmark.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/emoseman/cmsc451/project1/MergeSort.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/emoseman/cmsc451/project1/alg/MergeSort.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/emoseman/cmsc451/project1/Platform.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/emoseman/cmsc451/project1/Platform.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/emoseman/cmsc451/project1/ShellSort.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/emoseman/cmsc451/project1/alg/ShellSort.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/emoseman/cmsc451/project1/UnsortedException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/emoseman/cmsc451/project1/exp/UnsortedException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/emoseman/cmsc451/project1/alg/AbstractSort.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/emoseman/cmsc451/project1/alg/AbstractSort.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/emoseman/cmsc451/project1/exp/UnsortedException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/emoseman/cmsc451/project1/exp/UnsortedException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/emoseman/cmsc451/project1/util/ResultsWriter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/emoseman/cmsc451/project1/util/ResultsWriter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/emoseman/cmsc451/project1/util/SummarizeStatistics.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/emoseman/cmsc451/project1/util/SummarizeStatistics.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/emoseman/cmsc451/project1/util/TestData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/emoseman/cmsc451/project1/util/TestData.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -113,6 +102,19 @@
       <option name="presentableId" value="Default" />
       <updated>1762705418915</updated>
     </task>
+    <task id="LOCAL-00001" summary="Project working.">
+      <option name="closed" value="true" />
+      <created>1762714427225</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1762714427225</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Project working." />
+    <option name="LAST_COMMIT_MESSAGE" value="Project working." />
   </component>
 </project>

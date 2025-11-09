@@ -5,10 +5,11 @@ package org.emoseman.cmsc451.project1.exp;
  * CMSC-451
  * Professor Jiang
  * November 11, 2025
- *
+ * <p>
  * An exception to indicate that the sorting algorithm failed to sort the data.
  */
-public class UnsortedException extends RuntimeException {
+public class UnsortedException
+    extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
 
@@ -26,7 +27,5 @@ public class UnsortedException extends RuntimeException {
 
     public UnsortedException(String message, Throwable cause) {
         super(message, cause);
-
     }
-
 }

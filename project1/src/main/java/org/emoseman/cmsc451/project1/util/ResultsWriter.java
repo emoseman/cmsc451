@@ -21,10 +21,14 @@ public class ResultsWriter {
 
     private static final String BASE_FILE_NAME = "benchmark-results-%s.csv";
 
+    private static final String
+        headerRow =
+        "Size,Avg Count, Coef Count, Avg Time, Coef Time\n";
+
     /**
      * Print out a summary of the benchmark results.
      *
-     * @param stats
+     * @param benchmarkStats
      */
     public void storeBenchmarkStatistics(Map<AbstractSort, Map<Integer, List<RunCounter>>> benchmarkStats) {
         System.out.println("benchmarkStats = " + benchmarkStats);
@@ -43,6 +47,8 @@ public class ResultsWriter {
 
             // foreach element count
             try (FileWriter fw = new FileWriter(filename)) {
+                fw.write(headerRow);
+
                 for (Integer elementCount : summarized.get(sorter)
                                                       .keySet()
                                                       .stream()

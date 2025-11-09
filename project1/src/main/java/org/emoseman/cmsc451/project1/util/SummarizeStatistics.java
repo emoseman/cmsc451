@@ -24,12 +24,9 @@ public final class SummarizeStatistics {
      *
      * @return
      */
-    public static Map<AbstractSort, Map<Integer, Statistics>> summarize(
-        Map<AbstractSort, Map<Integer, List<RunCounter>>> runStatistics) {
+    public static Map<AbstractSort, Map<Integer, Statistics>> summarize(Map<AbstractSort, Map<Integer, List<RunCounter>>> runStatistics) {
 
-        Map<AbstractSort, Map<Integer, Statistics>>
-            results =
-            new HashMap<>();
+        Map<AbstractSort, Map<Integer, Statistics>> results = new HashMap<>();
 
         for (final Map.Entry<AbstractSort, Map<Integer, List<RunCounter>>> sorterEntry : runStatistics.entrySet()) {
             results.put(sorterEntry.getKey(), new HashMap<>());
@@ -38,13 +35,9 @@ public final class SummarizeStatistics {
                 perSorterRunStats =
                 sorterEntry.getValue();
 
-            System.out.println("perSorterRunStats = " + perSorterRunStats);
-
             for (Integer elementCount : perSorterRunStats.keySet()) {
 
-                List<RunCounter>
-                    runStats =
-                    perSorterRunStats.get(elementCount);
+                List<RunCounter> runStats = perSorterRunStats.get(elementCount);
 
                 List<Long>
                     durationValues =
@@ -53,7 +46,7 @@ public final class SummarizeStatistics {
                             .collect(Collectors.toList());
                 double avgDuration = calculateAverage(durationValues);
                 double
-                    stdDevDuration =
+                    durationCoefficient =
                     calculateCoefficientOfVariation(durationValues);
 
                 List<Long>
@@ -64,15 +57,15 @@ public final class SummarizeStatistics {
                             .toList();
                 double avrCount = calculateAverage(countValues);
                 double
-                    stdDeviationCount =
+                    countCoefficient =
                     calculateCoefficientOfVariation(countValues);
 
                 Statistics
                     stats =
-                    new Statistics(avgDuration,
-                                   stdDevDuration,
-                                   avrCount,
-                                   stdDeviationCount);
+                    new Statistics(avrCount,
+                                   countCoefficient,
+                                   avgDuration,
+                                   durationCoefficient);
 
                 results.get(sorterEntry.getKey()).put(elementCount, stats);
             }

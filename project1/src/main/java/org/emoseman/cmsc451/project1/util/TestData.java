@@ -11,10 +11,10 @@ import java.time.Instant;
  * This utility class handles data generation for the benchmarks.
  */
 public final class TestData {
+    private static final SecureRandom RANDOM = new SecureRandom();
+
     private TestData() {
     }
-
-    private static final SecureRandom RANDOM = new SecureRandom();
 
     /**
      * Generate random integers.
