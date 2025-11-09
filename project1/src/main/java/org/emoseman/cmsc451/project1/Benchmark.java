@@ -173,11 +173,6 @@ public class Benchmark
     /**
      * Run the sorter algorithm and store the statistics.
      *
-     * @param sorter
-     * @param sourceData
-     * @param stats
-     * @param dataSetSize
-     *
      * @throws UnsortedException
      */
     private Map<AbstractSort, Map<Integer, List<RunCounter>>> initializeResultMap() {
@@ -188,6 +183,13 @@ public class Benchmark
         return benchmarkResults;
     }
 
+    /**
+     *
+     * @param dataSetSize
+     * @param benchmarkResults
+     * @return
+     * @throws UnsortedException
+     */
     private Map<AbstractSort, Map<Integer, List<RunCounter>>> executeRunsForSize(
         int dataSetSize,
         Map<AbstractSort, Map<Integer, List<RunCounter>>> benchmarkResults)
@@ -205,6 +207,14 @@ public class Benchmark
         return benchmarkResults;
     }
 
+    /**
+     *
+     * @param sorter
+     * @param sourceData
+     * @param stats
+     * @param dataSetSize
+     * @throws UnsortedException
+     */
     private void runAndRecord(AbstractSort sorter,
                               int[] sourceData,
                               Map<Integer, List<RunCounter>> stats,

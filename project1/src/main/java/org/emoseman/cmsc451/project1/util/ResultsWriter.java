@@ -2,12 +2,12 @@ package org.emoseman.cmsc451.project1.util;
 
 import org.emoseman.cmsc451.project1.alg.AbstractSort;
 import org.emoseman.cmsc451.project1.model.RunCounter;
-import org.emoseman.cmsc451.project1.model.Statistics;
 
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Evan Moseman
@@ -21,22 +21,14 @@ public class ResultsWriter {
 
     private static final String BASE_FILE_NAME = "benchmark-results-%s.csv";
 
-    private static final String
-        headerRow =
-        "Size,Avg Count, Coef Count, Avg Time, Coef Time\n";
-
     /**
      * Print out a summary of the benchmark results.
      *
      * @param benchmarkStats
      */
     public void storeBenchmarkStatistics(Map<AbstractSort, Map<Integer, List<RunCounter>>> benchmarkStats) {
-        Map<AbstractSort, Map<Integer, Statistics>>
-            summarized =
-            SummarizeStatistics.summarize(benchmarkStats);
-
         // Foreach sorter
-        for (final AbstractSort sorter : summarized.keySet()) {
+        for (final AbstractSort sorter : benchmarkStats.keySet()) {
             String
                 filename =
                 String.format(BASE_FILE_NAME,
@@ -44,24 +36,25 @@ public class ResultsWriter {
 
             // foreach element count
             try (FileWriter fw = new FileWriter(filename)) {
-                fw.write(headerRow);
+                for (Integer elementCount : benchmarkStats.get(sorter)
+                                                          .keySet()
+                                                          .stream()
+                                                          .sorted()
+                                                          .toList()) {
 
-                for (Integer elementCount : summarized.get(sorter)
-                                                      .keySet()
-                                                      .stream()
-                                                      .sorted()
-                                                      .toList()) {
-
-                    Statistics stats = summarized.get(sorter).get(elementCount);
+                    String
+                        rowData =
+                        benchmarkStats.get(sorter)
+                                      .get(elementCount)
+                                      .stream()
+                                      .map(s -> s.operationCount() +
+                                                ":" +
+                                                s.runDuration())
+                                      .collect(Collectors.joining(","));
 
                     String
                         row =
-                        String.format("%d, %.6f, %.6f, %.6f, %.6f\n",
-                                      elementCount,
-                                      stats.averageCount(),
-                                      stats.countCoefficient(),
-                                      stats.averageTime(),
-                                      stats.timeCoefficient());
+                        String.format("%d,%s\n", elementCount, rowData);
                     fw.write(row);
                 }
             }

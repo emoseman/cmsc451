@@ -1,23 +1,46 @@
 package org.emoseman.cmsc451.project1;
 
-import javax.swing.*;
+import static org.emoseman.cmsc451.project1.util.MathHelper.calculateAverage;
+import static org.emoseman.cmsc451.project1.util.MathHelper.calculateCoV;
+
+import javax.swing.AbstractAction;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.WindowConstants;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.nio.charset.StandardCharsets;
+import static java.nio.charset.StandardCharsets.UTF_8;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * TODO
+ */
 public class BenchmarkReport
     extends JFrame {
 
-    private final JTable table;
+    private static final String[]
+        COLUMN_NAMES =
+        {"Size", "Avg Count", "Coef Count", "Avg Time", "Coef Time"};
+
     private final DefaultTableModel model;
+    private final JTable table;
 
     public BenchmarkReport() {
         super("Benchmark Report");
@@ -35,7 +58,6 @@ public class BenchmarkReport
 
         setLayout(new BorderLayout());
         add(new JScrollPane(table), BorderLayout.CENTER);
-        add(buildToolbar(), BorderLayout.NORTH);
         setJMenuBar(buildMenuBar());
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -44,24 +66,9 @@ public class BenchmarkReport
         setLocationRelativeTo(null);
     }
 
-    private JToolBar buildToolbar() {
-        JToolBar tb = new JToolBar();
-        tb.setFloatable(false);
-        tb.add(new AbstractAction("Open…") {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                doOpenFile();
-            }
-        });
-        tb.add(new AbstractAction("Clear") {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                clearTable();
-            }
-        });
-        return tb;
-    }
-
+    /**
+     * Create the menu bar.
+     */
     private JMenuBar buildMenuBar() {
         JMenuBar mb = new JMenuBar();
 
@@ -73,9 +80,6 @@ public class BenchmarkReport
                 doOpenFile();
             }
         });
-        open.setAccelerator(KeyStroke.getKeyStroke('O',
-                                                   Toolkit.getDefaultToolkit()
-                                                          .getMenuShortcutKeyMaskEx()));
 
         JMenuItem clear = new JMenuItem(new AbstractAction("Clear Table") {
             @Override
@@ -90,9 +94,6 @@ public class BenchmarkReport
                 dispose();
             }
         });
-        quit.setAccelerator(KeyStroke.getKeyStroke('Q',
-                                                   Toolkit.getDefaultToolkit()
-                                                          .getMenuShortcutKeyMaskEx()));
 
         file.add(open);
         file.add(clear);
@@ -103,11 +104,17 @@ public class BenchmarkReport
         return mb;
     }
 
+    /**
+     * Remove all table contents.
+     */
     private void clearTable() {
         model.setRowCount(0);
         model.setColumnCount(0);
     }
 
+    /**
+     * Handle file opening.
+     */
     private void doOpenFile() {
         JFileChooser chooser = new JFileChooser();
         chooser.setDialogTitle("Open Data File");
@@ -120,52 +127,59 @@ public class BenchmarkReport
 
         File file = chooser.getSelectedFile();
         try {
-            LoadedData data = loadCsvFile(file);
-            applyToTable(data.headers, data.rows);
+            List<List<String>> data = loadCsvFile(file);
+            applyToTable(data);
         }
-        catch (Exception ex) {
-            ex.printStackTrace();
+        catch (Exception e) {
             JOptionPane.showMessageDialog(this,
-                                          "Failed to load file:\n" +
-                                          ex.getMessage(),
-                                          "Error",
+                                          "Failed to load file:" +
+                                          e.getMessage(),
+                                          "\nError",
                                           JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    private void applyToTable(String[] headers, List<String[]> rows) {
+    /**
+     * Apply the data sets to the table.
+     *
+     * @param rows
+     */
+    private void applyToTable(List<List<String>> rows) {
         clearTable();
-        for (String h : headers) {
-            model.addColumn(h);
+        model.setColumnIdentifiers(COLUMN_NAMES);
+        for (List<String> row : rows) {
+            model.addRow(row.toArray());
         }
-        for (String[] r : rows) {
-            model.addRow(padOrTrim(r, headers.length));
-        }
-        applyColumnAlignment(rows);
-    }
-
-    private static String[] padOrTrim(String[] row, int len) {
-        if (row.length == len) {
-            return row;
-        }
-        String[] out = new String[len];
-        for (int i = 0; i < len; i++) {
-            out[i] = i < row.length ? row[i] : "";
-        }
-        return out;
+        alignColumns();
     }
 
     /**
-     * Minimal CSV/TSV reader:
-     * - Detects delimiter by first line (comma vs tab).
-     * - Treats first row as headers.
-     * - Handles simple quoted fields with commas/tabs.
+     * Set the column alignment.
      */
-    private static LoadedData loadCsvFile(File file)
+    private void alignColumns() {
+        DefaultTableCellRenderer left = new DefaultTableCellRenderer();
+        left.setHorizontalAlignment(SwingConstants.LEFT);
+        DefaultTableCellRenderer right = new DefaultTableCellRenderer();
+        right.setHorizontalAlignment(SwingConstants.RIGHT);
+
+        for (int i = 0; i < COLUMN_NAMES.length; i++) {
+            if (i == 0) {
+                table.getColumnModel().getColumn(i).setCellRenderer(left);
+            }
+            else {
+                table.getColumnModel().getColumn(i).setCellRenderer(right);
+            }
+        }
+    }
+
+    /**
+     * Parse the csv file into data rows.
+     */
+    private List<List<String>> loadCsvFile(File file)
         throws Exception {
         List<String> lines = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(file,
-                                                                   StandardCharsets.UTF_8))) {
+                                                                   UTF_8))) {
             String s;
             while ((s = br.readLine()) != null) {
                 lines.add(s);
@@ -175,114 +189,53 @@ public class BenchmarkReport
             throw new IllegalArgumentException("File is empty.");
         }
 
-        char delimiter = detectDelimiter(lines.get(0));
-        String[] headers = parseLine(lines.get(0), delimiter);
-
-        List<String[]> rows = new ArrayList<>();
-        for (int i = 1; i < lines.size(); i++) {
-            rows.add(parseLine(lines.get(i), delimiter));
+        List<List<String>> rows = new ArrayList<>();
+        for (String line : lines) {
+            rows.add(processDataRow(line));
         }
-        return new LoadedData(headers, rows);
-    }
-
-    private static char detectDelimiter(String firstLine) {
-        int commas = count(firstLine, ',');
-        int tabs = count(firstLine, '\t');
-        return tabs > commas ? '\t' : ',';
-    }
-
-    private static int count(String s, char c) {
-        int n = 0;
-        for (int i = 0; i < s.length(); i++) {
-            if (s.charAt(i) == c) {
-                n++;
-            }
-        }
-        return n;
+        return rows;
     }
 
     /**
-     * CSV parser
+     * Parse individual comma-separated line of text.
      *
-     * @param line
-     * @param delim
-     *
-     * @return
+     * @param line the line of csv text.
      */
-    private static String[] parseLine(String line, char delim) {
+    private List<String> processDataRow(String line) {
         List<String> cells = new ArrayList<>();
-        StringBuilder cur = new StringBuilder();
-        boolean inQuotes = false;
 
-        for (int i = 0; i < line.length(); i++) {
-            char ch = line.charAt(i);
-            if (ch == '"') {
-                if (inQuotes &&
-                    i + 1 < line.length() &&
-                    line.charAt(i + 1) == '"') {
-                    // escaped quote
-                    cur.append('"');
-                    i++;
-                }
-                else {
-                    inQuotes = !inQuotes;
-                }
-            }
-            else if (ch == delim && !inQuotes) {
-                cells.add(cur.toString());
-                cur.setLength(0);
-            }
-            else {
-                cur.append(ch);
-            }
+        String[] parts = line.split("\\s*,\\s*");
+        if (parts.length <= 1) {
+            throw new RuntimeException("Failed to parse data.");
         }
-        cells.add(cur.toString());
-        return cells.toArray(new String[0]);
-    }
 
-    private void applyColumnAlignment(List<String[]> rows) {
-        DefaultTableCellRenderer right = new DefaultTableCellRenderer();
-        right.setHorizontalAlignment(SwingConstants.RIGHT);
-        DefaultTableCellRenderer left = new DefaultTableCellRenderer();
-        left.setHorizontalAlignment(SwingConstants.LEFT);
-
-        int columnCount = table.getColumnModel().getColumnCount();
-        for (int col = 1; col < columnCount; col++) {
-            boolean numeric = isNumericColumn(rows, col);
-            table.getColumnModel()
-                 .getColumn(col)
-                 .setCellRenderer(numeric ? right : left);
+        String size = parts[0];
+        List<Long> counts = new ArrayList<>();
+        List<Long> times = new ArrayList<>();
+        for (int i = 1; i < parts.length; i++) {
+            String[] values = parts[i].split(":");
+            counts.add(Long.valueOf(values[0]));
+            times.add(Long.valueOf(values[1]));
         }
-    }
+        System.out.println("times = " + times.size());
+        System.out.println("counts.size() = " + counts.size());
+        cells.add(size);
 
-    private static boolean isNumericColumn(List<String[]> rows,
-                                           int columnIndex) {
-        for (String[] row : rows) {
-            if (columnIndex >= row.length) {
-                continue;
-            }
-            String cell = row[columnIndex].trim();
-            if (cell.isEmpty()) {
-                continue;
-            }
-            if (!isNumeric(cell)) {
-                return false;
-            }
-        }
-        return true;
-    }
+        String countAvg = String.format("%.02f", calculateAverage(counts));
+        cells.add(countAvg);
 
-    private static boolean isNumeric(String value) {
-        try {
-            Double.parseDouble(value.replaceAll(",", ""));
-            return true;
-        }
-        catch (NumberFormatException e) {
-            return false;
-        }
-    }
+        String
+            countCoV =
+            String.format("%.02f%%", calculateCoV(counts) * 100.0D);
+        cells.add(countCoV);
 
-    private record LoadedData(String[] headers, List<String[]> rows) {
+        String timeAvg = String.format("%.02f", calculateAverage(times));
+        cells.add(timeAvg);
+
+        String timeCoV = String.format("%.02f%%", calculateCoV(times) * 100.0D);
+        cells.add(timeCoV);
+
+        return cells;
     }
 
     public static void main(String[] args) {
