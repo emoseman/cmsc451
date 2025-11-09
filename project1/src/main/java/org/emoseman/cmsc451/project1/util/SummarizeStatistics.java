@@ -7,6 +7,7 @@ import org.emoseman.cmsc451.project1.model.Statistics;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 /**
@@ -74,6 +75,11 @@ public final class SummarizeStatistics {
         return results;
     }
 
+    /**
+     *
+     * @param values
+     * @return
+     */
     private static double calculateAverage(List<Long> values) {
         long total = 0;
         for (Long value : values) {

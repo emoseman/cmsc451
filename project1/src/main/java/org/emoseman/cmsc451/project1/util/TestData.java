@@ -20,7 +20,7 @@ public final class TestData {
      * Generate random integers.
      */
     public static int[] generateRandomData(int count) {
-        RANDOM.setSeed(Instant.now().getEpochSecond());
+        RANDOM.setSeed(Instant.now().getNano());
 
         int[] result = new int[count];
         for (int i = 0; i < count; i++) {

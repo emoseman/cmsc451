@@ -10,6 +10,7 @@ java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(21)
     }
+    modularity.inferModulePath = true
 }
 
 repositories {
@@ -26,6 +27,13 @@ tasks.register('runHotspotOptimized', JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
     mainClass = application.mainClass
     jvmArgs '-XX:CompileThreshold=1000', '-XX:+TieredCompilation'
+}
+
+tasks.register('runBenchmarkReport', JavaExec) {
+    group = 'application'
+    description = 'Launches the Swing BenchmarkReport UI.'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'org.emoseman.cmsc451.project1.BenchmarkReport'
 }
 
 dependencies {

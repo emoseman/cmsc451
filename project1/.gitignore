@@ -3,4 +3,6 @@
 
 # Ignore Gradle build output directory
 build
-/*.csv
+*.csv
+.idea
+.gradle-home

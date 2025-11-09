@@ -30,13 +30,13 @@ public class Benchmark
     // Benchmark parameters
     private static final int RUN_COUNT = 40;
     private static final int DATASET_SIZES = 12;
-    private static final int ELEMENT_COUNT_INC = 300;
+    private static final int ELEMENT_COUNT_INC = 500;
 
     // Warmup parameters
     private static final int WARMUP_ELEMENT_COUNT = 200;
     private static final int MIN_WARMUP_ITERATIONS = 5;
-    private static final int MAX_WARMUP_ITERATIONS = 200;
-    private static final double WARMUP_STABILITY_THRESHOLD = 0.02;
+    private static final int MAX_WARMUP_ITERATIONS = 1000;
+    private static final double WARMUP_STABILITY_THRESHOLD = 0.005;
     private static final int REQUIRED_STABLE_ITERATIONS = 3;
 
     private static final AbstractSort[]
@@ -56,12 +56,7 @@ public class Benchmark
         throws UnsortedException {
 
         // Container for the sort run statistics for each sorter
-        Map<AbstractSort, Map<Integer, List<RunCounter>>>
-            benchmarkResults =
-            new HashMap<>();
-        for (AbstractSort sorter : sorters) {
-            benchmarkResults.put(sorter, new HashMap<>());
-        }
+        Map<AbstractSort, Map<Integer, List<RunCounter>>> benchmarkResults = initializeResultMap();
 
         // Warm up JVM/JIT
         performWarmup(sorters);
@@ -70,18 +65,8 @@ public class Benchmark
         for (int i = 1; i <= DATASET_SIZES; i++) { // dataset sizes
 
             int dataSetSize = i * ELEMENT_COUNT_INC;
-            int[] testDataSource = TestData.generateRandomData(dataSetSize);
 
-            for (int j = 0; j < RUN_COUNT; j++) {  // run count
-
-                // Test each algorithm
-                for (AbstractSort sorter : sorters) {
-                    runAndRecord(sorter,
-                                 testDataSource,
-                                 benchmarkResults.get(sorter),
-                                 dataSetSize);
-                }
-            }
+            benchmarkResults.putAll(executeRunsForSize(dataSetSize, benchmarkResults));
         }
 
         new ResultsWriter().storeBenchmarkStatistics(benchmarkResults);
@@ -195,6 +180,31 @@ public class Benchmark
      *
      * @throws UnsortedException
      */
+    private Map<AbstractSort, Map<Integer, List<RunCounter>>> initializeResultMap() {
+        Map<AbstractSort, Map<Integer, List<RunCounter>>> benchmarkResults = new HashMap<>();
+        for (AbstractSort sorter : sorters) {
+            benchmarkResults.put(sorter, new HashMap<>());
+        }
+        return benchmarkResults;
+    }
+
+    private Map<AbstractSort, Map<Integer, List<RunCounter>>> executeRunsForSize(
+        int dataSetSize,
+        Map<AbstractSort, Map<Integer, List<RunCounter>>> benchmarkResults)
+        throws UnsortedException {
+
+        for (int j = 0; j < RUN_COUNT; j++) {
+            int[] testDataSource = TestData.generateRandomData(dataSetSize);
+            for (AbstractSort sorter : sorters) {
+                runAndRecord(sorter,
+                             testDataSource,
+                             benchmarkResults.get(sorter),
+                             dataSetSize);
+            }
+        }
+        return benchmarkResults;
+    }
+
     private void runAndRecord(AbstractSort sorter,
                               int[] sourceData,
                               Map<Integer, List<RunCounter>> stats,

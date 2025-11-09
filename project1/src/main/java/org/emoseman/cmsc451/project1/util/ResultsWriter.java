@@ -31,12 +31,9 @@ public class ResultsWriter {
      * @param benchmarkStats
      */
     public void storeBenchmarkStatistics(Map<AbstractSort, Map<Integer, List<RunCounter>>> benchmarkStats) {
-        System.out.println("benchmarkStats = " + benchmarkStats);
         Map<AbstractSort, Map<Integer, Statistics>>
             summarized =
             SummarizeStatistics.summarize(benchmarkStats);
-
-        System.out.println("summarized = " + summarized);
 
         // Foreach sorter
         for (final AbstractSort sorter : summarized.keySet()) {
@@ -59,7 +56,7 @@ public class ResultsWriter {
 
                     String
                         row =
-                        String.format("%d, %.2f, %.2f, %.2f, %.2f\n",
+                        String.format("%d, %.6f, %.6f, %.6f, %.6f\n",
                                       elementCount,
                                       stats.averageCount(),
                                       stats.countCoefficient(),
