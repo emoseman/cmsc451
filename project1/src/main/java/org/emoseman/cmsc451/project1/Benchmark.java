@@ -5,8 +5,8 @@ import org.emoseman.cmsc451.project1.alg.MergeSort;
 import org.emoseman.cmsc451.project1.alg.ShellSort;
 import org.emoseman.cmsc451.project1.exp.UnsortedException;
 import org.emoseman.cmsc451.project1.model.RunCounter;
-import org.emoseman.cmsc451.project1.util.ResultsWriter;
 import org.emoseman.cmsc451.project1.util.DataGenerator;
+import org.emoseman.cmsc451.project1.util.ResultsWriter;
 import org.emoseman.cmsc451.project1.util.Validator;
 
 import java.time.Duration;
@@ -24,8 +24,9 @@ import java.util.stream.Collectors;
  * CMSC-451
  * Project 1
  * November 11, 2025
- *
- * Coordinates the warmup, benchmarking runs, and persistence of statistics for the configured sorting algorithms.
+ * <p>
+ * Coordinates the warmup, benchmarking runs, and persistence of statistics for
+ * the configured sorting algorithms.
  */
 public class Benchmark
     implements Runnable {
@@ -36,7 +37,7 @@ public class Benchmark
     private static final int ELEMENT_COUNT_INC = 500;
 
     // Warmup parameters
-    private static final int WARMUP_ELEMENT_COUNT = 200;
+    private static final int WARMUP_ELEMENT_COUNT = ELEMENT_COUNT_INC * 20;
     private static final int MIN_WARMUP_ITERATIONS = 5;
     private static final int MAX_WARMUP_ITERATIONS = 1000;
     private static final double WARMUP_STABILITY_THRESHOLD = 0.005;
@@ -57,7 +58,9 @@ public class Benchmark
         throws UnsortedException {
 
         // Container for the sort run statistics for each sorter
-        Map<AbstractSort, Map<Integer, List<RunCounter>>> benchmarkResults = initializeResultMap();
+        Map<AbstractSort, Map<Integer, List<RunCounter>>>
+            benchmarkResults =
+            initializeResultMap();
 
         // Warm up JVM/JIT
         performWarmup(sorters);
@@ -67,7 +70,8 @@ public class Benchmark
 
             int dataSetSize = i * ELEMENT_COUNT_INC;
 
-            benchmarkResults.putAll(executeRunsForSize(dataSetSize, benchmarkResults));
+            benchmarkResults.putAll(executeRunsForSize(dataSetSize,
+                                                       benchmarkResults));
         }
 
         new ResultsWriter().storeBenchmarkStatistics(benchmarkResults);
@@ -84,7 +88,7 @@ public class Benchmark
     private void performWarmup(AbstractSort[] sorters)
         throws UnsortedException {
 
-        int warmupSize = ELEMENT_COUNT_INC * 20;
+        int warmupSize = WARMUP_ELEMENT_COUNT;
         int[] warmupData = DataGenerator.generateData(warmupSize);
         Map<AbstractSort, Duration>
             previousDurations =
@@ -178,7 +182,9 @@ public class Benchmark
      * @return empty results map ready for population
      */
     private Map<AbstractSort, Map<Integer, List<RunCounter>>> initializeResultMap() {
-        Map<AbstractSort, Map<Integer, List<RunCounter>>> benchmarkResults = new HashMap<>();
+        Map<AbstractSort, Map<Integer, List<RunCounter>>>
+            benchmarkResults =
+            new HashMap<>();
         for (AbstractSort sorter : sorters) {
             benchmarkResults.put(sorter, new HashMap<>());
         }
@@ -189,8 +195,9 @@ public class Benchmark
      * Execute the configured number of runs for a given dataset size and update
      * the accumulated statistics map.
      *
-     * @param dataSetSize       number of elements in the generated dataset
-     * @param benchmarkResults  map of sorter -> element count -> run stats to update
+     * @param dataSetSize      number of elements in the generated dataset
+     * @param benchmarkResults map of sorter -> element count -> run stats to
+     *                         update
      *
      * @return the updated benchmark map
      *

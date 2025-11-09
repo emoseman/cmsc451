@@ -7,8 +7,9 @@ import java.util.List;
  * CMSC-451
  * Project 1
  * November 11, 2025
- *
- * Provides helper methods to compute averages and coefficients of variation for benchmark metrics.
+ * <p>
+ * Provides helper methods to compute averages and coefficients of variation for
+ * benchmark metrics.
  */
 public final class MathHelper {
     private MathHelper() {

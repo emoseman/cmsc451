@@ -41,10 +41,10 @@ import java.util.List;
 public class BenchmarkReport
     extends JFrame {
 
+    static String cliFilename;
     private static final String[]
         COLUMN_NAMES =
         {"Size", "Avg Count", "Coef Count", "Avg Time", "Coef Time"};
-
     private final DefaultTableModel model;
     private final JTable table;
 
@@ -75,7 +75,6 @@ public class BenchmarkReport
         setLocationRelativeTo(null);
 
         if (args.length >= 1) {
-            System.out.println("cliFilename = " + args[0]);
             try {
                 applyToTable(loadCsvFile(new File(args[0])));
             }
@@ -83,6 +82,16 @@ public class BenchmarkReport
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    /**
+     * Launch the Swing application on the Event Dispatch Thread.
+     *
+     * @param args CLI arguments (unused)
+     */
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new BenchmarkReport(args).setVisible(
+            true));
     }
 
     /**
@@ -267,8 +276,6 @@ public class BenchmarkReport
             counts.add(Long.valueOf(values[0]));
             times.add(Long.valueOf(values[1]));
         }
-        System.out.println("times = " + times.size());
-        System.out.println("counts.size() = " + counts.size());
         cells.add(size);
 
         String countAvg = String.format("%.02f", calculateAverage(counts));
@@ -286,16 +293,5 @@ public class BenchmarkReport
         cells.add(timeCoV);
 
         return cells;
-    }
-
-    static String cliFilename;
-
-    /**
-     * Launch the Swing application on the Event Dispatch Thread.
-     *
-     * @param args CLI arguments (unused)
-     */
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new BenchmarkReport(args).setVisible(true));
     }
 }

@@ -5,8 +5,9 @@ package org.emoseman.cmsc451.project1.alg;
  * CMSC-451
  * Project 1
  * November 11, 2025
- *
- * Shell sort implementation instrumented to capture operation counts and total runtime.
+ * <p>
+ * Shell sort implementation instrumented to capture operation counts and total
+ * runtime.
  */
 public class ShellSort
     extends AbstractSort {

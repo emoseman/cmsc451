@@ -7,8 +7,9 @@ import java.util.Arrays;
  * CMSC-451
  * Project 1
  * November 11, 2025
- *
- * Merge sort implementation that tracks elapsed time and critical operations for benchmarking.
+ * <p>
+ * Merge sort implementation that tracks elapsed time and critical operations
+ * for benchmarking.
  */
 public class MergeSort
     extends AbstractSort {

@@ -7,8 +7,9 @@ import org.emoseman.cmsc451.project1.exp.UnsortedException;
  * CMSC-451
  * Project 1
  * November 11, 2025
- *
- * Provides validation helpers to ensure generated benchmark results remain sorted as expected.
+ * <p>
+ * Provides validation helpers to ensure generated benchmark results remain
+ * sorted as expected.
  */
 public final class Validator {
 
@@ -26,7 +27,11 @@ public final class Validator {
         throws UnsortedException {
         for (int i = 0; i < data.length - 1; i++) {
             if (data[i] > data[i + 1]) {
-                // throw new UnsortedException();
+                throw new UnsortedException(String.format(
+                    "Data not sorted at index %d (values %d, %d)",
+                    i,
+                    data[i],
+                    data[i + 1]));
             }
         }
     }

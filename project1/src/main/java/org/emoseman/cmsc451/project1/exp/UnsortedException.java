@@ -5,8 +5,9 @@ package org.emoseman.cmsc451.project1.exp;
  * CMSC-451
  * Project 1
  * November 11, 2025
- *
- * Runtime exception used when a sorting algorithm fails to produce ordered data.
+ * <p>
+ * Runtime exception used when a sorting algorithm fails to produce ordered
+ * data.
  */
 public class UnsortedException
     extends RuntimeException {

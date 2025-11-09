@@ -8,8 +8,9 @@ import java.time.Instant;
  * CMSC-451
  * Project 1
  * November 11, 2025
- *
- * Generates pseudo-random integer arrays used as input data sets for the benchmarks.
+ * <p>
+ * Generates pseudo-random integer arrays used as input data sets for the
+ * benchmarks.
  */
 public final class DataGenerator {
     private static final SecureRandom RANDOM = new SecureRandom();

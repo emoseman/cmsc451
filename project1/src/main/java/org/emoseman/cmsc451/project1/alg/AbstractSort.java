@@ -8,8 +8,9 @@ import java.time.Instant;
  * CMSC-451
  * Project 1
  * November 11, 2025
- *
- * Provides shared timing and operation-count instrumentation for concrete sorting implementations.
+ * <p>
+ * Provides shared timing and operation-count instrumentation for concrete
+ * sorting implementations.
  */
 public abstract class AbstractSort {
 

@@ -13,8 +13,9 @@ import java.util.concurrent.TimeUnit;
  * CMSC-451
  * Project 1
  * November 11, 2025
- *
- * Program entry point that pins the benchmark thread to one core when possible before launching the benchmark run.
+ * <p>
+ * Program entry point that pins the benchmark thread to one core when possible
+ * before launching the benchmark run.
  */
 @SuppressWarnings("ResultOfMethodCallIgnored")
 public class Platform {

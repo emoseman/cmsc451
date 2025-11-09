@@ -14,8 +14,9 @@ import java.util.stream.Collectors;
  * CMSC-451
  * Project 1
  * November 11, 2025
- *
- * Serializes benchmark run statistics for each sorter into CSV files for later analysis.
+ * <p>
+ * Serializes benchmark run statistics for each sorter into CSV files for later
+ * analysis.
  */
 public class ResultsWriter {
 
