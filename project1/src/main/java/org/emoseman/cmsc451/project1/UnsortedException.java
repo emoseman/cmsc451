@@ -8,7 +8,7 @@ package org.emoseman.cmsc451.project1;
  *
  * An exception to indicate that the sorting algorithm failed to sort the data.
  */
-public class UnsortedException extends Exception {
+public class UnsortedException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
 
