@@ -13,6 +13,11 @@ From the repo root (`/home/emoseman/workspace/cmsc451/project1`):
 ./gradlew clean build
 ```
 
+On Windows, use the batch wrapper:
+
+```cmd
+gradlew.bat clean build
+```
 Gradle will compile the code and run unit tests. To improve repeatability, the build uses Gradle’s application plugin so `Platform` is the default entry point.
 
 ## Running the Benchmark (Platform)
@@ -22,6 +27,11 @@ The `Platform` class manages benchmark execution, optional CPU affinity, and inv
 ./gradlew run
 ```
 
+On Windows:
+
+```cmd
+gradlew.bat run
+```
 ### Warmup Behavior
 Before timing the actual datasets, the benchmark performs a JVM warmup:
 - Dataset size: `ELEMENT_COUNT_INC * 20` (by default 10,000 elements)
@@ -41,6 +51,11 @@ Before timing the actual datasets, the benchmark performs a JVM warmup:
 ./gradlew runBenchmarkReport --args="/path/to/benchmark-results-MergeSort.csv"
 ```
 
+Windows:
+
+```cmd
+gradlew.bat runBenchmarkReport --args="C:\path\to\benchmark-results-MergeSort.csv"
+```
 If no argument is provided, the UI opens to a blank table—use `File → Open…` to select a CSV. The first (size) column is left-aligned; all computed metric columns are right-aligned for readability.
 
 ### CSV Format
@@ -53,6 +68,11 @@ Lines in `benchmark-results-*.csv` look like:
 ## Alternate Run Configurations
 - `./gradlew runHotspotOptimized` – Runs the benchmark with `-XX:CompileThreshold=1000` and `-XX:+TieredCompilation` to speed up JIT optimization.
 - Customize dataset sizes, run count, or warmup thresholds by editing constants at the top of `Benchmark.java`.
+
+Windows equivalents:
+
+- `gradlew.bat runHotspotOptimized`
+- Same customization guidance applies.
 
 ## Troubleshooting
 - Missing JNA/Affinity: the benchmark still runs; you’ll just see “Affinity JNA available = false”.
